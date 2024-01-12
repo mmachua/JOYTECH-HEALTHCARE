@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>New Files</title>
+{% endblock head  %}}
+
+{% block body %}
+
+<br>
+
+
+<div class="container">
+   
+<!--
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Search for the file here!</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"></a>
+        </li>
+      
+      </ul>
+   
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+    <form class="form-inline " action="{% url 'home:home' %}">
+    <input class="form-control mr-sm-2" type="search"   placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+    </form>  
+  </div>
+</nav>
+-->
+
+<br>
+<div class="container">    
+    <h4>List of New Files</h4>
+    
+<table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">File Number</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Second Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Age</th>
+      <th scope="col">ID Number</th>
+      <th scope="col">Patient Category</th>
+      <th scope="col">Created On</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in page_obj %}
+    <tr>
+      
+      <th scope="row">{{ post.file_no }}</th>
+      <td>{{ post.first_name }}</td>
+      <td>{{ post.second_name }}</td>
+      <td>{{ post.phone_number }}</td>
+      <td>{{ post.age }}</td>
+      <td>{{ post.id_number }}</td>
+      <td>{{ post.patient_category }}</td>
+      <td>{{ post.created_at }}</td> 
+      
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+  
+</table>
+
+<br>
+
+<h6>These File Numbers are Auto-Generated</h6>
+<br>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
+<br>
+<hr>
+<div class="footer" style="color:rgb(9, 191, 39);">
+        
+    <div class="copyright">
+        <div class="container">
+            <span>Joytech HEALTHCARE &copy; 2022 Email : machuamartin@gmail.com </span>
+        </div>
+    </div>
+</div>
+<br>
+
+{% endblock body %} 
+
+{% block footer %}
+
+  
+{% endblock footer %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %} 
+
+{% block head %}
+<title>Send WhatsApp Message to Patients</title>
+{% endblock head %}
+
+{% block body %}
+
+<br>
+<div class="container">
+  {% if title and confirm_message %}
+  <div class="alert alert-success" role="alert">
+    <h5>{{ title }}</h5>
+    <p>{{ confirm_message }}</p>
+  </div>
+
+  {% if sent_numbers or failed_numbers %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Status</th>
+          <th scope="col">Phone Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for number in sent_numbers %}
+        <tr class="table-success">
+          <td>Sent</td>
+          <td>{{ number }}</td>
+        </tr>
+        {% endfor %}
+        {% for number in failed_numbers %}
+        <tr class="table-danger">
+          <td>Failed</td>
+          <td>{{ number }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <h4 class="text-center">Use this form to send WhatsApp Message to Patients</h4>
+  <form method="post" class="form">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="phone_numbers" class="form-label">Phone Numbers (comma-separated):</label>
+      <textarea type="text" class="form-control" name="phone_numbers" id="phone_numbers"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="message" class="form-label">Message:</label>
+      <textarea class="form-control" name="message" id="message"></textarea>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Send WhatsApp Message</button>
+  </form>
+  {% endif %}
+
+  <hr>
+</div>
+
+<div class="footer" style="color:olive;">
+  <hr/>
+  <div class="container">
+    <span>JOYTECH HEALTHCARE SYSTEM &copy; 2023</span>
+  </div>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{{%  block head %}
+<title>Sorted  List </title>
+{% endblock head  %}}
+
+{% block body %}
+
+<br>
+<div class="container">    
+
+<table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">File Number</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Second Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Age</th>
+      <th scope="col">ID Number</th>
+      <th scope="col">Patient Category</th>
+      <th scope="col">Filed On</th>
+      <th scope="col"><h6 class="font-italic">Edited On</h6></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in page_obj %}
+    <tr>
+      
+      <th scope="row">{{ post.file_number }}</th>
+      <td><p>{{ post.first_name }}</p></td>
+      <td>{{ post.second_name }}</td>
+      <td>{{ post.phone_number }}</td>
+      <td>{{ post.age }}</td>
+      <td>{{ post.id_number }}</td>
+      <td>{{ post.patient_category }}</td>
+      <td>{{ post.created_at }}</td> 
+      <td>{{ post.updated_at }}</td>
+      
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br>
+          
+
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>         
+
+
+</div>
+<hr>
+
+<div class="footer" style="color:olive;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>JOYTECH HEALTHCARE SYSTEM &copy; 2022</span>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock body %} 

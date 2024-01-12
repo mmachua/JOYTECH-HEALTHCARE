@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{{%  block head %}
+<title>Outreach Patients</title>
+{% endblock head  %}}
+
+{% block body %}
+
+<br>
+<div class="container">
+  <br>    
+    <h3 class="text-center text-danger">Outreach Patients List</h3>
+    
+<table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">ID Number</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Outreach Location</th>
+      <th scope="col">Dx</th>
+      <th scope="col">Followup</th>
+      <th scope="col">date</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in page_obj %}
+    <tr>
+      
+      
+      <td><p>{{ post.firstname }}</p></td>
+      <td><p>{{ post.lastname }}</p></td>
+     
+      <td>{{ post.idno }}</td>
+      <td>{{ post.phone }}</td>
+      <td>{{ post.oureachlocation }}</td>
+      <td>{{ post.dx }}</td>
+      <td>{{ post.followup }}</td> 
+      <td>{{ post.date }}</td>
+      
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br>
+          
+
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>         
+
+
+</div>
+<hr>
+
+<div class="footer" style="color:olive;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>JOYTECH HEALTHCARE SYSTEM &copy; 2022</span>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock body %}

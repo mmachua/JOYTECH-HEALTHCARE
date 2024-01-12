@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %} 
+
+{% block head %}
+<title>Tetris</title>
+{% endblock head %}
+
+{% block body %}
+
+<br><br>
+<div class="container">
+    <h5 class="lead text-center">Tetris</h5>
+
+</div>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .game-container {
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(20, 30px);
+            border: 1px solid #333;
+            margin: 0 auto;
+        }
+
+        .block {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #777;
+            box-sizing: border-box;
+        }
+
+        .scoreboard {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="game-container">
+                    <div class="game-board" id="game-board"></div>
+                    <div class="mb-3">
+                        <label for="level-select">Select Level:</label>
+                        <select id="level-select" class="form-control" onchange="changeLevel()">
+                            <option value="1">Level 1 (Easy)</option>
+                            <option value="2">Level 2 (Medium)</option>
+                            <option value="3">Level 3 (Hard)</option>
+                        </select>
+                    </div>
+                    <button onclick="startGame()" class="btn btn-primary mt-3">Start Game</button>
+                    <div class="scoreboard mt-3" id="scoreboard"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BOARD_WIDTH = 10;
+        const BOARD_HEIGHT = 20;
+        const BLOCK_SIZE = 30;
+        const EMPTY = 'white';
+
+        const tetrominoes = [
+        // I (I-shape) tetromino with two rotations
+        [
+            [[1, 1, 1, 1]]
+        ],
+        [
+            [1],
+            [1],
+            [1],
+            [1]
+        ],
+
+        // T (T-shape) tetromino with four rotations
+        [
+            [1, 1, 1],
+            [0, 1, 0]
+        ],
+        [
+            [0, 1],
+            [1, 1],
+            [0, 1]
+        ],
+        [
+            [0, 1, 0],
+            [1, 1, 1]
+        ],
+        [
+            [1, 0],
+            [1, 1],
+            [1, 0]
+        ],
+
+        // L (L-shape) tetromino with four rotations
+        [
+            [1, 1, 1],
+            [1, 0, 0]
+        ],
+        [
+            [1, 1],
+            [0, 1],
+            [0, 1]
+        ],
+        [
+            [0, 0, 1],
+            [1, 1, 1]
+        ],
+        [
+            [1, 0],
+            [1, 0],
+            [1, 1]
+        ],
+
+        // J (J-shape) tetromino with four rotations
+        [
+            [1, 1, 1],
+            [0, 0, 1]
+        ],
+        [
+            [0, 1],
+            [0, 1],
+            [1, 1]
+        ],
+        [
+            [1, 0, 0],
+            [1, 1, 1]
+        ],
+        [
+            [1, 1],
+            [1, 0],
+            [1, 0]
+        ],
+
+        // O (O-shape) tetromino (no rotation needed)
+        [
+            [1, 1],
+            [1, 1]
+        ],
+
+        // Z (Z-shape) tetromino with two rotations
+        [
+            [1, 1, 0],
+            [0, 1, 1]
+        ],
+        [
+            [0, 1],
+            [1, 1],
+            [1, 0]
+        ],
+
+        // S (S-shape) tetromino with two rotations
+        [
+            [0, 1, 1],
+            [1, 1, 0]
+        ],
+        [
+            [1, 0],
+            [1, 1],
+            [0, 1]
+        ]
+    ];
+
+    // ... Your existing JavaScript code ...
+
+    function rotateTetromino() {
+        const oldRotation = currentRotation;
+        currentRotation = (currentRotation + 1) % currentTetromino.length;
+        const newTetromino = currentTetromino[currentRotation];
+        if (isCollision(newTetromino)) {
+            // Restore previous rotation if collision occurs
+            currentRotation = oldRotation;
+        } else {
+            clearTetromino();
+            currentTetromino = newTetromino;
+            drawTetromino();
+            drawBoard();
+        }
+    }
+
+    function isCollision(newTetromino) {
+        for (let y = 0; y < newTetromino.length; y++) {
+            for (let x = 0; x < newTetromino[y].length; x++) {
+                if (newTetromino[y][x]) {
+                    const nextY = currentY + y;
+                    const nextX = currentX + x;
+                    if (
+                        nextY >= BOARD_HEIGHT || // Check if the tetromino is at the bottom of the board
+                        nextX < 0 || // Check if the tetromino is beyond the left edge
+                        nextX >= BOARD_WIDTH || // Check if the tetromino is beyond the right edge
+                        (board[nextY] && board[nextY][nextX] !== EMPTY) // Check for collisions with other tetrominoes
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+       
+
+        function drawBoard() {
+            let boardDiv = document.getElementById('game-board');
+            boardDiv.innerHTML = '';
+
+            for (let row = 0; row < BOARD_HEIGHT; row++) {
+                for (let col = 0; col < BOARD_WIDTH; col++) {
+                    let block = document.createElement('div');
+                    block.className = 'block';
+                    block.style.backgroundColor = board[row][col];
+                    boardDiv.appendChild(block);
+                }
+            }
+        }
+
+        function startGame() {
+            clearInterval(intervalId);
+            board = new Array(BOARD_HEIGHT).fill(0).map(() => new Array(BOARD_WIDTH).fill(EMPTY));
+            currentTetromino = getRandomTetromino();
+            currentX = Math.floor(BOARD_WIDTH / 2) - Math.floor(currentTetromino[0].length / 2);
+            currentY = 0;
+            drawBoard();
+            intervalId = setInterval(dropTetromino, dropInterval); // Set interval to drop the tetromino based on the selected level
+        }
+
+        function calculatePoints() {
+            let points = 0;
+            for (let row = 0; row < BOARD_HEIGHT; row++) {
+                if (board[row].every(block => block !== EMPTY)) {
+                    points += 10; // Increase points for each row filled
+                }
+            }
+            return points;
+        }
+
+        function updateScoreboard(points) {
+            const scoreboardDiv = document.getElementById('scoreboard');
+            scoreboardDiv.textContent = `Points: ${points}`;
+        }
+
+        function clearCompletedRows() {
+            for (let row = BOARD_HEIGHT - 1; row >= 0; row--) {
+                if (board[row].every(block => block !== EMPTY)) {
+                    // If the row is completely filled, remove it and shift the above rows down
+                    board.splice(row, 1);
+                    board.unshift(new Array(BOARD_WIDTH).fill(EMPTY));
+                }
+            }
+        }
+
+        function dropTetromino() {
+            clearTetromino();
+            currentY++;
+            if (isCollision()) {
+                currentY--;
+                placeTetromino();
+                clearCompletedRows();
+                const points = calculatePoints();
+                updateScoreboard(points);
+                currentTetromino = getRandomTetromino();
+                currentX = Math.floor(BOARD_WIDTH / 2) - Math.floor(currentTetromino[0].length / 2);
+                currentY = 0;
+                if (isCollision()) {
+                    clearInterval(intervalId);
+                    alert(`Game Over! Your Final Points: ${points}. Click "Start Game" to play again.`);
+                }
+            }
+            drawTetromino();
+            drawBoard();
+        }
+
+        // function isCollision() {
+        //     for (let y = 0; y < currentTetromino.length; y++) {
+        //         for (let x = 0; x < currentTetromino[y].length; x++) {
+        //             if (currentTetromino[y][x] && (board[currentY + y + 1] && board[currentY + y + 1][currentX + x]) !== EMPTY) {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        //     return false;
+        // }
+
+        function clearCompletedRows() {
+        for (let row = BOARD_HEIGHT - 1; row >= 0; row--) {
+            if (board[row].every(block => block !== EMPTY)) {
+                // If the row is completely filled, remove it and shift the above rows down
+                board.splice(row, 1);
+                board.unshift(new Array(BOARD_WIDTH).fill(EMPTY));
+            }
+        }
+    }
+
+    function isCollision() {
+        for (let y = 0; y < currentTetromino.length; y++) {
+            for (let x = 0; x < currentTetromino[y].length; x++) {
+                if (currentTetromino[y][x]) {
+                    const nextY = currentY + y + 1;
+                    const nextX = currentX + x;
+                    if (
+                        nextY >= BOARD_HEIGHT || // Check if the tetromino is at the bottom of the board
+                        (board[nextY] && board[nextY][nextX] !== EMPTY) // Check for collisions with other tetrominoes
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function placeTetromino() {
+        for (let y = 0; y < currentTetromino.length; y++) {
+            for (let x = 0; x < currentTetromino[y].length; x++) {
+                if (currentTetromino[y][x]) {
+                    board[currentY + y][currentX + x] = 'blue';
+                }
+            }
+        }
+    }
+
+
+        function placeTetromino() {
+            for (let y = 0; y < currentTetromino.length; y++) {
+                for (let x = 0; x < currentTetromino[y].length; x++) {
+                    if (currentTetromino[y][x]) {
+                        board[currentY + y][currentX + x] = 'blue';
+                    }
+                }
+            }
+        }
+
+        function moveLeft() {
+            clearTetromino();
+            currentX--;
+            if (isCollision()) {
+                currentX++;
+            }
+            drawTetromino();
+            drawBoard();
+        }
+
+        function moveRight() {
+            clearTetromino();
+            currentX++;
+            if (isCollision()) {
+                currentX--;
+            }
+            drawTetromino();
+            drawBoard();
+        }
+
+        function rotateTetromino() {
+            const oldTetromino = currentTetromino;
+            currentTetromino = currentTetromino[0].map((col, i) => currentTetromino.map(row => row[i])).reverse();
+            if (isCollision()) {
+                currentTetromino = oldTetromino;
+            }
+            drawTetromino();
+            drawBoard();
+        }
+
+        function changeLevel() {
+            const levelSelect = document.getElementById('level-select');
+            const selectedLevel = parseInt(levelSelect.value);
+            switch (selectedLevel) {
+                case 1:
+                    dropInterval = 500;
+                    break;
+                case 2:
+                    dropInterval = 300;
+                    break;
+                case 3:
+                    dropInterval = 200;
+                    break;
+                default:
+                    dropInterval = 500;
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        function handleKeyPress(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveLeft();
+                    break;
+                case 'ArrowRight':
+                    moveRight();
+                    break;
+                case 'ArrowUp':
+                    rotateTetromino();
+                    break;
+                case 'ArrowDown':
+                    dropTetromino();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        drawBoard();
+    </script>
+{% endblock body %}

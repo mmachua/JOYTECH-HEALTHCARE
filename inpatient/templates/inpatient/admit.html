@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %} 
+{{%  block head %}
+<title>Admit Patient</title>
+{% endblock head  %}}
+
+{% block body %}
+
+<br/>
+<div class="container">
+{% if confirm_message %}
+<h3>{{ title }}</h3>
+<p>{{ confirm_message }}</p>
+{% endif %}
+{% if form %}
+
+
+
+  
+    <h3>Admit Patient</h3>
+<div class="col-xs-12 col-md-8">
+
+<div class="col-sm-6-sm-offset-3">
+    <form class="form-horizontal form_middle" enctype='multipart/form-data' method="POST">
+        
+        {% csrf_token %}
+        {{ form|crispy }}
+        
+        
+        <button type="submit" class="btn btn-sm btn-info">Save</button>
+    </form>
+
+
+
+</div>
+</div>
+<div class="col-xs-12 col-md-4">
+      
+
+</div>
+
+    <hr/>    
+
+{% endif %}
+
+<br>
+
+<div class="footer" style="color:rgb(4, 100, 95);">
+        
+    <div class="copyright">
+        <div class="container">
+            <span>Joytech HEALTHCARE &copy; 2023 Email : machuamartin@gmail.com </span>
+        </div>
+    </div>
+</div>
+<br>
+
+
+{% endblock body %}

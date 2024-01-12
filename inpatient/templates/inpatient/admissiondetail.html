@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{{%  block head %}
+<title>{{ post.first_name }}</title>
+{% endblock head  %}}
+
+
+{% block body %}
+
+<br>
+<br>
+<div class="container">  
+  <h3 class="text-center">{{ post.firstname }}'s Inpatient Detail</h3>
+  <br>
+  
+<table class="table table-hover table mb-0 table-bordered border-primary    table-responsive-md">
+    <thead class="table-dark">
+      
+        <th scope="col">First Name</th>
+        <th scope="col">Second Name</th>
+        <th scope="col">Phone Number</th>
+        <!-- <th scope="col">TCA Date</th> -->
+        <th scope="col">File Number</th>
+        <th scope="col">Ward </th>
+        <th scope="col">Date of Admission</th>
+    </thead>
+    <tbody>
+      
+        <td class="">{{ post.firstname }}</td>
+        <td>{{ post.lastname }}</td>
+        <td>{{ post.phone }}</td>
+        <!-- <td>{{ post.dateofadmission }}</td> -->
+        <th class="text-info">{{ post.fileno }}</th>
+        <td class="text-dark">{{ post.ward }}</td>
+        <td>{{ post.dateofadmission }}</td> 
+    </tbody>
+  </table>
+  
+
+<hr>
+<br>
+  <nav class="nav nav-pills nav-fill">
+    <a class="nav-link btn-sm btn-danger" aria-current="page" href="{{ post.get_absolute_re_path }}editfile">Edit {{ post.firstname }}'s Inpatient Detail</a>
+    <a class="nav-link  " href="#"></a>
+    <a class="nav-link" href="#"></a>
+    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true"></a>
+  </nav>
+
+
+  <h4>{{ post.firstname }}'s Notes</h4>
+  {% for note in notes %}
+  <p>{{ note.note }}</p><p>by DR. {{ note.doctor }}</p><p>{{ note.created_at }}</p>
+  {% endfor %}
+  
+  <hr>
+  
+  <h2>Add a Note:</h2>
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save Note</button>
+  </form>
+<hr>
+
+
+
+
+
+
+
+</div>
+                          <div class="container">
+                                <img class="card border" >{{ img|safe }} 
+
+                                <img src={{ img }}>
+                          </div>
+
+<div class="footer" style="color:olive;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>machuamartin@gmail.com &copy; 2023</span>
+        </div>
+      </div>
+    </div>
+
+{% endblock body %}

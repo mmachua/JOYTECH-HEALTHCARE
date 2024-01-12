@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>Query Appointments</title>
+{% endblock head  %}}
+
+
+{% block body %} 
+
+{{target_plot|safe}}
+
+<br>
+<div class="container">
+<nav class="navbar navbar-expand-sm navbar-light text-center bg-light">
+  <ul class="navbar-nav">
+      
+    
+        
+    
+    </ul>
+ 
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+  <form class="form-inline text-center" action="" method="post">
+    {% csrf_token %}
+    {{search_form|crispy}}
+     --
+    <button class="btn btn-sm btn-info  my-2" type="submit">Query Clinic</button>
+</form>
+    
+</div>
+</nav>
+<br>
+
+</div>
+
+<div class="container">
+    {% for message in messages %}
+        <div role="alert" class="alert alert-warning">
+            {{message}}
+        </div>
+    {% endfor %}
+ 
+    
+    {% if sales_df %}
+
+               <p class="h2 display-6 text-center text-dark">Patients Booked on The Query Period</p>
+
+    {% endif %}
+<br>
+   
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+      <th class="lead text-center text-dark " scope="col">{{ sales_df|safe }}</th>
+      
+        
+      </tr>
+    </thead>
+   
+    </tbody>
+    
+  </table>
+  
+  <br>
+  
+  <br>
+  {% if is_paginated %}
+  <div class="wrapper">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{page_obj.prebious_page_number}}">Previous</a></li>
+              {% endif %}
+              {% for number in page_obj.paginator.page_range %}
+              <li class="page-item"><a class="page-link" href="?page={{number}}">{{number}}</a></li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{page_obj.prebious_page_number}}">Next</a></li>
+              {% endif %}
+          </ul>
+      </nav>
+  </div>
+  
+  {% endif %}
+  
+  
+  <script>
+    $(function () {
+      $("#{{ widget.datetimepicker_id }}").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+    });
+  </script>
+
+
+</div>
+
+
+
+
+<div class="footer" style="color:rgb(9, 124, 191);">
+   <hr>     
+  <div class="copyright">
+      <div class="container text-center">
+          <span>Joytech HEALTHCARE &copy; 2023 Email : machuamartin@gmail.com </span>
+      </div>
+  </div>
+</div>
+<br>
+
+
+{% endblock body %}
+

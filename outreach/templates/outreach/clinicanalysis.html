@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+ 
+{{%  block head %}
+<title>Clinic Analysis</title>
+{% endblock head  %}}
+
+
+{% block body %}
+<br>
+
+{{target_plot|safe}}
+<br>
+<div class="container">
+    {% for message in messages %}
+        <div role="alert" class="alert alert-warning">
+            {{message}}
+        </div>
+    {% endfor %}
+    <form class="form-inline" action="" method="post">
+        {% csrf_token %}
+        {{search_form|crispy}}
+         --
+        <button class="btn btn-sm btn-info  my-2" type="submit">Analyze Booked Clinics</button>
+    </form>
+    
+    <hr>
+    {% if sales_df %}
+       
+        
+        <h5 class=" text-center">Clinic Analysis</h5>
+            <hr>
+        <img src="data:image/png;base64, {{chart|safe}}" alt="" id="img">
+        <br>
+        <h5 class=" text-black text-center">Number of Patients booked per Clinic on the Query Period</h5>
+       <hr>
+      <h5 class="lead text-black text-center"><b> {{ aa|safe }}</b> </h5>
+      <p>Total number of clinics: {{ total_clinics }}</p>
+
+      <hr>
+
+
+
+
+    {% endif %}<br>
+
+</div>
+
+
+<br>
+<hr>
+<div class="footer" style="color:rgb(94, 9, 191);">
+        
+    <div class="copyright">
+        <div class="container">
+            <span>Joytech HEALTHCARE &copy; 2023 Email : machuamartin@gmail.com </span>
+        </div>
+    </div>
+</div>
+<br>
+
+
+{% endblock body %}

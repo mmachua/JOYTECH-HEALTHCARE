@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>404 page not found!!!</title>
+{% endblock head  %}}
+
+
+{% block body %} 
+<br>
+
+<div class="container">
+  <div class="alert alert-danger d-flex justify-content-center" role="alert">
+    you're lost click here to get back !!!
+  </div>
+<h1 class="d-flex justify-content-center"><b>404</b></h1>
+
+<br>
+<a href="/login" 
+  button type="button" class="btn btn-info btn-block" >Login</a></button>
+</a>
+  <br>
+  
+ 
+  
+
+  <img src="https://images.unsplash.com/photo-1525785967371-87ba44b3e6cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80" class="img-fluid" style="height:35rem; width:75rem; " alt="...">
+
+
+</div>
+
+
+
+<div class="footer" style="color:red;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>JOYTECH HEALTHCARE SYSTEM &copy; 2022</span>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock body %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>Query Appointments</title>
+{% endblock head  %}}
+
+
+{% block body %} 
+<br>
+<div class="container">
+    {% for message in messages %}
+        <div role="alert" class="alert alert-warning">
+            {{message}}
+        </div>
+    {% endfor %}
+    <form class="form-inline mx-auto" action="" method="post">
+        {% csrf_token %}
+        {{search_form|crispy}}
+        --
+        <button class="btn btn-info   my-2 " type="submit">Query Appointments</button>
+    </form>
+    <hr>
+   
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+      <th class="text-center text-danger " scope="col">First Name</th>
+      <th class="text-center" scope="col">Last Name</th>
+      <th class="text-center" scope="col">Clinic</th>
+      <th class="text-center" scope="col">Phone</th>
+      <th class="text-center" scope="col">TCA Date</th>
+      <th class="text-center " scope="text-center col">Doctor's Note</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in page_obj %}
+      <tr>
+        
+        
+        <td><p>{{ post.firstname }}</p></td>
+      <td><p>{{ post.lastname }}</p></td>
+     
+      <td>{{ post.clinic }}</td>
+      <td>{{ post.phone }}</td>
+      <td>{{ post.tcadate }}</td>
+      <td>{{ post.doctornote }}</td>
+      
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+    
+  </table>
+  
+  <br>
+  
+  <br>
+  {% if is_paginated %}
+  <div class="wrapper">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{page_obj.prebious_page_number}}">Previous</a></li>
+              {% endif %}
+              {% for number in page_obj.paginator.page_range %}
+              <li class="page-item"><a class="page-link" href="?page={{number}}">{{number}}</a></li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{page_obj.prebious_page_number}}">Next</a></li>
+              {% endif %}
+          </ul>
+      </nav>
+  </div>
+  
+  {% endif %}
+  
+  
+
+</div>
+
+{% endblock body %}
+

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{{%  block head %}
+<title>{{ post.first_name }}</title>
+{% endblock head  %}}
+
+
+{% block body %}
+
+<br>
+<br>
+<div class="container">  
+  <h3 class="text-center">{{ post.first_name }} File Detail</h3>
+  <br>
+  
+<table class="table">
+    <thead class="table-light">
+        <th scope="col">File Number</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Second Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Age</th>
+        <th scope="col">ID Number</th>
+        <th scope="col">Patient Category</th>
+        <th scope="col">Filed On</th>
+    </thead>
+    <tbody> 
+        <th scope="row">{{ post.file_number }}</th>
+        <td class="">{{ post.first_name }}</td>
+        <td>{{ post.second_name }}</td>
+        <td>{{ post.phone_number }}</td>
+        <td>{{ post.age }}</td>
+        <th class="text-info">{{ post.id_number }}</th>
+        <td class="text-dark">{{ post.patient_category }}</td>
+        <td>{{ post.created_at }}</td> 
+        
+    </tbody>
+  </table>
+  
+
+
+<hr>
+<br>
+  <nav class="nav nav-pills nav-fill">
+    <a class="nav-link btn-danger" aria-current="page" href="{{ post.get_absolute_re_path }}editfile">Edit {{ post.first_name }}'s file details?</a>
+    <a class="nav-link  " href="#">Add Patient's document</a>
+    <a class="nav-link" href="#">View Patient's document</a>
+    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true"></a>
+  </nav>
+
+
+<hr>
+
+
+
+
+<!-- 
+<!- { % if request.GET.post_data %}
+  { % with post_data=request.GET.post_data|unescape|safe %}
+    { % with post_data_dict=post_data|json_loads %}
+      <div>
+        <h1>{{ post_data_dict.id_number }}</h1>
+        <p>{{ post_data_dict.file_number }}</p>
+        - Display any other fields included in the post data ->
+      </div>
+    { % endwith %}
+  { % endwith %}
+{ % endif %} --> 
+
+
+
+
+  
+  <br>
+  <a class="nav-link text-center text-black" href="#">
+    <h4>Other Files that have {{ post.first_name }}'s phone or/and Id Number</h4>
+</a>
+
+  <table class="table">
+    <thead class="table-light">
+        <th scope="col">File Number</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Second Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Age</th>
+        <th scope="col">ID Number</th>
+        <th scope="col">Patient Category</th>
+        <th scope="col">Filed On</th>
+    </thead>
+    
+    <tbody>
+      {% for post in page_obj %}
+        <th scope="row">{{ poste.file_number }}</th>
+        <td class="">{{ poste.first_name }}</td>
+        <td>{{ poste.second_name }}</td>
+        <td>{{ poste.phone_number }}</td>
+        <td>{{ poste.age }}</td>
+        <th class="text-info">{{ poste.id_number }}</th>
+        <td class="text-dark">{{ poste.patient_category }}</td>
+        <td>{{ poste.created_at }}</td> 
+        {% endfor %}
+    </tbody>
+    
+  </table>
+
+
+  <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="footer" style="color:olive;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>machuamartin@gmail.com &copy; 2023</span>
+        </div>
+      </div>
+    </div>
+
+{% endblock body %}

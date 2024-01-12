@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Equipment List</title>
+</head>
+<body>
+    <h1>Equipment List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Department</th>
+                <th>Equipment</th>
+                <th>State</th>
+                <th>In Charge</th>
+                <th>Unique Identifier</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipment in equipment_list %}
+            <tr>
+                <td>{{ equipment.get_department_display }}</td>
+                <td>{{ equipment.name }}</td>
+                <td>{{ equipment.state }}</td>
+                <td>{{ equipment.in_charge }}</td>
+                <td>{{ equipment.unique_identifier }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

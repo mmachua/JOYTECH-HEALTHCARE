@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Equipment Detail</title>
+</head>
+<body>
+    <h1>{{ equipment.name }} Detail</h1>
+    <p><strong>Department:</strong> {{ equipment.get_department_display }}</p>
+    <p><strong>State:</strong> {{ equipment.state }}</p>
+    <p><strong>In Charge:</strong> {{ equipment.in_charge }}</p>
+    <p><strong>Unique Identifier:</strong> {{ equipment.unique_identifier }}</p>
+    <p><strong>Date Registered:</strong> {{ equipment.date_registered }}</p>
+    <img src="{% url 'equipment-detail' equipment.pk %}" alt="QR Code">
+</body>
+</html>

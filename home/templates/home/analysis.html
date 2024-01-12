@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>Analysis</title>
+{% endblock head  %}}
+
+{% block body %} 
+
+{{target_plot|safe}}
+<br>
+<div class="container">
+    {% for message in messages %}
+        <div role="alert" class="alert alert-warning">
+            {{message}}
+        </div>
+    {% endfor %}
+    <form class="form-inline" action="" method="post">
+        {% csrf_token %}
+        {{search_form|crispy}}
+         --
+        <button class="btn btn-sm btn-info  my-2" type="submit">Analyze</button>
+    </form>
+    <hr>
+    {% if sales_df %}
+       
+        
+        <b>Chart</b>
+        <img src="data:image/png;base64, {{chart|safe}}" alt="" id="img">
+        <br>
+        {{ sales_df|safe }}
+    {% endif %}<br>
+
+</div>
+
+
+<br>
+<hr>
+<div class="footer" style="color:rgb(94, 9, 191);">
+        
+    <div class="copyright">
+        <div class="container">
+            <span>Joytech HEALTHCARE &copy; 2022 Email : machuamartin@gmail.com </span>
+        </div>
+    </div>
+</div>
+<br>
+
+{% endblock body %}
+

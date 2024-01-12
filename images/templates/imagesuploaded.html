@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>All Ids</title>
+{% endblock head  %}}
+
+
+{% block body %} 
+	<br>
+<div class="container">
+<!-- Boostrap Navbar -->
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <ul class="navbar-nav">
+        
+      <script type="text/javascript">
+        function startTime()
+        {
+            var today=new Date();
+            var h=today.getHours();
+            var m=today.getMinutes();
+            var s=today.getSeconds();
+        
+            m=checkTime(m);
+            s=checkTime(s);
+            document.getElementById('txt').innerHTML=h+":"+m+":"+s;
+            t=setTimeout('startTime()',500);
+        }
+            function checkTime(i)
+        {
+            if (i<10)
+        {
+            i="0" + i;
+        }
+            return i;
+        }
+        </script>
+        
+        <body onload="startTime()">
+        
+      <h5><div class="tile-content fs-5 fw-bold text-info" id="txt"></h5>  
+      
+      </ul>
+   
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+    <form class="form-inline mx-auto " action="{% url 'images:imagesuploaded' %}">
+    <input class="form-control mr-sm-2  py-1 " type="search" 
+      placeholder="Search with ID..." aria-label="search"   name="search">
+    <button class="btn btn-info my-2 my-sm-0" type="submit">Search Document</button>
+    </form>  
+      
+  </div>
+</nav>
+
+</div>
+
+
+<br>
+	<div class="container">    
+
+		<table class="table">
+		  <thead class="table-light">
+			
+			<tr>
+			  
+			  <th scope="col">First Name</th>
+			  <th scope="col">ID Number</th>
+			  <th scope="col">ID Link</th>
+			  <th scope="col">added on</th>
+			  
+			</tr>
+		  </thead>
+		  <tbody>
+			{% for hotel in hotel_images %}
+			<tr>
+			  <th class="text-info">{{ hotel.first_name }}</th>
+			  <th class="text-info">{{ hotel.id_number }}</th>
+			  <td class="text-dark"><a href="{{ hotel.patientid.url }}  ">
+				            Click to View ID Document
+			
+			              <img src="" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
+		          </a>
+        </td>
+        <th class="text-info">{{ hotel.created_at }}</th>
+			  
+			 
+			</tr>
+			{% endfor %}
+		  </tbody>
+		  
+		</table>
+		
+		<br>
+    
+
+    <br>
+
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    
+    
+    <br>
+    
+    <div class="footer" style="color:rgb(94, 9, 191);">
+            
+        <div class="copyright">
+            <div class="container">
+                <span>Joytech HEALTHCARE &copy; 2022 Email : machuamartin@gmail.com </span>
+            </div>
+        </div>
+    </div>
+    <br>
+
+{% endblock body %}

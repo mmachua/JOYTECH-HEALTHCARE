@@ -1,0 +1,301 @@
+ {% load static %}
+ {% load crispy_forms_tags %} 
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/style.css'%}" type="text/css">
+    <link rel="shortcut icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/564/564276.png"/>
+    
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    
+    
+    
+   
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+      
+     {% block head %}
+      <title>base</title>
+    
+    {% endblock %}
+</head>
+
+<body>
+       
+        <nav class="navbar navbar-expand-lg fixed-top navbar navbar-dark" style="background-color:rgb(4, 123, 111);">
+                    <a class="navbar-brand" href="{% url 'home:home' %}"><b>J-TECH HEALTHCARE</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                      <ul class="navbar-nav">
+                        
+                        {% if user.is_authenticated %}
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'home:home' %}">Home<span class="sr-only">(current)</span></a>
+                        </li>
+                        
+                        
+                       
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Files
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <a class="dropdown-item text-danger" href="{% url 'home:createnewfile' %}"><b>Create New File </b>-(To get Outpatient File No. here..)</a>
+                            <a class="dropdown-item text-info" href="{% url 'home:newfiles' %}"><b>New Files </b>(Check File No. here..)</a>
+
+                          
+                        </li>
+                        </li>
+                        
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Documents
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <a class="dropdown-item text-info" href="/images/images">Upload ID Document</a>
+                            <a class="dropdown-item" href="{% url 'images:imagesuploaded' %}"><b>View ID Documents</b></a>
+
+                           
+                            <a class="dropdown-item text-info" href="{% url 'records:post' %}">Upload Document</a>
+                            <a class="dropdown-item" href="{% url 'records:display' %}"><b>View Uploaded Document</b></a>
+                            
+                          
+                        </li>
+                        </li>
+                        
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Outreach</a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'outreach:saveoutreach' %}"><b>Save Outreach Patient</b></a>
+                            <a class="dropdown-item text-info" href="{% url 'outreach:outreach' %}">View Outreach Patients</a>
+                          </div>
+                        </li>
+                        </li>
+
+
+                  
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'home:contact' %}">Register File(records)</a>
+                        </li>
+
+                        
+                        
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Appointments
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'outreach:bookclinic' %}">Book Clinic</a>
+
+                            
+
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'outreach:clinic' %}">View Outpatient Appointments</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'outreach:booktheatre' %}">Book Theatre Patient</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'outreach:theatrepatients' %}">View Theatre Appointments</a>
+                          </div>
+                        </li>
+                        </li>
+
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            About Files
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'home:about' %}">File List</a>
+                            <a class="dropdown-item" href="{% url 'home:newfiles' %}">New Files</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'outreach:tetris' %}">Tetris</a>
+                            <a class="dropdown-item" href="{% url 'home:analysis' %}">Analysis</a>
+                            <a class="dropdown-item" href="{% url 'inventory:chatbot' %}">Joytech Chatbot</a>
+                            <a class="dropdown-item" href="{% url 'inventory:equipment-list' %}">Equipment List</a>
+                            <a class="dropdown-item" href="{% url 'inventory:add-equipment' %}">Add Equipment</a>
+
+                          </div>
+                        </li>
+                        </li>
+
+
+                        <li class="nav-item dropdown active">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admissions
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'inpatient:admitpatient' %}">Admit Patient</a>
+                            <a class="dropdown-item" href="{% url 'inpatient:admissions' %}">View Admissions</a>
+                            <div class="dropdown-divider"></div>
+                            
+                            <a class="dropdown-item" href="/logout">Logout</a>
+
+                          </div>
+                        </li>
+                        </li>
+                        
+                        
+                        
+                        <!--<li class="nav-item text-black active">
+                          <a class="nav-link" href="/admin/">Admin</a>
+                        </li>-->
+                      </li>
+
+                        </li>
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'outreach:sendsms' %}">Send Sms</a>
+                        </li>
+                        
+                        <!-- <li class="nav-item">
+                          <a class="nav-link" href="/logout">Logout</a>
+                        </li> -->
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+                        </li>
+                
+                        {% else %}
+                  
+                        <li class="nav-item">
+                          <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/images/images">Upload Id</a>
+                        </li>
+                        {% endif %}
+                        
+                      </ul>
+                    </div>
+        </nav>
+
+
+        
+
+<br>
+<br>
+
+
+
+
+
+
+  <script>
+    $(function () {
+      $("#datetimepicker").datetimepicker();
+    });
+  </script>
+        
+
+
+    {% block body%}
+    <h1>Base</h1>
+
+{% block footer %}
+<!-- Footer -->
+<footer class="page-footer font-small cyan darken-3">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+    <!-- Grid row-->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-12 py-5">
+        <div class="mb-5 flex-center">
+
+          <!-- Facebook -->
+          <a class="fb-ic">
+            <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+          </a>
+          <!-- Twitter -->
+          <a class="tw-ic">
+            <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+          </a>
+          <!-- Google +-->
+          <a class="gplus-ic">
+            <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+          </a>
+          <!--Linkedin -->
+          <a class="li-ic">
+            <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+          </a>
+          <!--Instagram-->
+          <a class="ins-ic">
+            <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+          </a>
+          <!--Pinterest-->
+          <a class="pin-ic">
+            <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
+          </a>
+        </div>
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row-->
+
+  </div>
+  <!-- Footer Elements -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="/"> MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+{% endblock footer %}
+
+    {% endblock %}
+   <!-- Optional JavaScript -->
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
+
+     <!-- XDSoft DateTimePicker -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+ 
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+
+
+    
+
+</body>
+
+
+
+<!-- this should go after your </body> -->
+<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
+<script src="/jquery.js"></script>
+<script src="/build/jquery.datetimepicker.full.min.js"></script>
+ 
+
+
+</html>

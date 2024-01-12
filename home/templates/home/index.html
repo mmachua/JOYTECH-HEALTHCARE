@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+{{%  block head %}
+<title>Hospital Dashboard</title>
+{% endblock head  %}}
+
+
+{% block body %} 
+<br>
+<div class="container">
+<div class="card border-dark mb-3" style="max-width: 18rem;">
+    <div class="card-header">OutPatients - 56</div>
+   
+  </div>
+<!-- endcontainer -->
+</div>
+<!-- endcntainer -->
+
+
+{%load plotly_dash%}
+
+{%plotly_app name="SimpleExample" ratio=0.45 %}
+
+
+<hr>
+
+<div class="footer" style="color:olive;">
+        <hr/>
+        <div class="copyright">
+          <div class="container">
+            <span>JOYTECH HEALTHCARE SYSTEM &copy; 2022</span>
+        </div>
+      </div>
+    </div>
+
+{% endblock body %}

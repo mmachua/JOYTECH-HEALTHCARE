@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <title>Joytech Chatbot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .chat-container {
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-log {
+            padding: 10px;
+            overflow-y: scroll;
+            max-height: 300px;
+            background-color: #f7f7f7;
+        }
+
+        .message-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            background-color: #dcf8c6;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-left: auto;
+            padding: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .chatbot-message {
+            background-color: #fff;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            margin-right: auto;
+            padding: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        #input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f7f7f7;
+        }
+
+        /* Floating Icon */
+        .joytech-chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .joytech-chatbot-icon img {
+            width: 80%;
+            height: auto;
+        }
+
+        /* Floating Chat Container */
+        .joytech-chatbot-container {
+            position: fixed;
+            bottom: 100%;
+            right: 20px;
+            z-index: 1000;
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            background-color: #9fcbdf;
+        }
+
+        @media screen and (max-width: 576px) {
+            .joytech-chatbot-container {
+                width: 100%;
+                bottom: 0;
+                border-radius: 0;
+            }
+        }
+
+        /* Chatbot Icon */
+            .chatbot-icon {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+                cursor: pointer;
+            }
+
+            .chatbot-icon img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
+
+        /* Chat Overlay */
+        .joytech-chatbot-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #9bc5d9;
+            display: none;
+        }
+
+        @media screen and (max-width: 576px) {
+            .joytech-chatbot-overlay {
+                width: 100%;
+                bottom: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+
+<div class="chatbot-icon joytech-chatbot-icon" id="joytech-chatbot-icon">
+    <img src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=957&q=80" alt="Chatbot Icon">
+</div>
+
+
+<div class="joytech-chatbot-overlay" id="joytech-chatbot-overlay">
+    <div class="chat-container">
+        <div id="chat-log"></div>
+        <div id="input-row">
+            <input type="text" id="user-input" class="form-control" placeholder="Type your message here...">
+            <button id="send-button" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h1 class="text-center">Joytech Healthcare Chatbot</h1>
+    <div class="chat-container">
+        <div id="chat-log"></div>
+        <div id="input-row">
+            <input type="text" id="user-input" class="form-control" placeholder="Type your message here...">
+            <button id="send-button" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Include Bootstrap JS and inline JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const chatbotIcon = document.getElementById('joytech-chatbot-icon');
+    const chatbotContainer = document.createElement('div');
+    chatbotContainer.className = 'joytech-chatbot-container';
+    const chatLog = document.getElementById('chat-log');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+
+    const chatbotOverlay = document.getElementById('joytech-chatbot-overlay');
+
+    chatbotIcon.addEventListener('click', () => {
+        chatbotOverlay.style.display = 'block';
+    });
+
+    sendButton.addEventListener('click', async () => {
+        sendMessage();
+    });
+
+    userInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // ... (other parts of your code)
+
+    function sendMessage() {
+        const userMessage = userInput.value.trim();
+        if (userMessage === '') {
+            return;
+        }
+
+        const userMessageContainer = document.createElement('div');
+        userMessageContainer.className = 'message-container';
+        const userMessageElement = document.createElement('div');
+        userMessageElement.className = 'message user-message';
+        userMessageElement.textContent = userMessage;
+        userMessageContainer.appendChild(userMessageElement);
+        chatLog.appendChild(userMessageContainer);
+
+        userInput.value = '';
+
+        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom before loading message
+
+        const chatbotMessageContainer = document.createElement('div');
+        chatbotMessageContainer.className = 'message-container';
+        const chatbotMessageElement = document.createElement('div');
+        chatbotMessageElement.className = 'message chatbot-message';
+        chatbotMessageElement.textContent = 'Loading...';
+        chatbotMessageContainer.appendChild(chatbotMessageElement);
+        chatLog.appendChild(chatbotMessageContainer);
+
+        fetch('/inventory/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `message=${encodeURIComponent(userMessage)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            const chatbotResponse = data.response;
+
+            chatbotMessageElement.textContent = chatbotResponse;
+
+            // Scroll to the bottom after the loading message is replaced with the actual response
+            chatLog.scrollTop = chatLog.scrollHeight;
+        })
+        .catch(error => {
+            console.error('An error occurred:', error);
+        });
+    }
+    async function sendMessage() {
+        const userMessage = userInput.value.trim();
+        if (userMessage === '') {
+            return;
+        }
+
+        const userMessageContainer = document.createElement('div');
+        userMessageContainer.className = 'message-container';
+        const userMessageElement = document.createElement('div');
+        userMessageElement.className = 'message user-message';
+        userMessageElement.textContent = userMessage;
+        userMessageContainer.appendChild(userMessageElement);
+        chatLog.appendChild(userMessageContainer);
+
+        userInput.value = '';
+
+        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom before loading message
+
+        // Add a small delay before showing the loading message
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        const chatbotMessageContainer = document.createElement('div');
+        chatbotMessageContainer.className = 'message-container';
+        const chatbotMessageElement = document.createElement('div');
+        chatbotMessageElement.className = 'message chatbot-message';
+        chatbotMessageElement.textContent = 'Loading...';
+        chatbotMessageContainer.appendChild(chatbotMessageElement);
+        chatLog.appendChild(chatbotMessageContainer);
+
+        chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom after loading message is added
+
+        fetch('/inventory/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `message=${encodeURIComponent(userMessage)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            const chatbotResponse = data.response;
+
+            chatbotMessageElement.textContent = chatbotResponse;
+
+            // Scroll to the bottom after the loading message is replaced with the actual response
+            chatLog.scrollTop = chatLog.scrollHeight;
+        })
+        .catch(error => {
+            console.error('An error occurred:', error);
+        });
+    }
+
+
+
+
+
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    document.body.appendChild(chatbotContainer);
+
+    chatbotIcon.addEventListener('click', () => {
+        chatbotContainer.style.display = 'block';
+    });
+</script>
+
+{% endblock body %}
