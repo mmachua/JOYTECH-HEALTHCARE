@@ -32,7 +32,7 @@ JoyTech Healthcare Management System is a comprehensive tool designed to streaml
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/joytech-healthcare.git`
+1. Clone the repository: `git clone https://github.com/mmachua/JOYTECH-HEALTHCARE.git`
 2. Navigate to the project directory: `cd joytech-healthcare`, then run python manage.py runserver
 3. you can create a .bat file that will help the system run in all your organization's authorized computers and you can access it through
 4. the IP of the computer you have hosted the system.
