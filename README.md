@@ -50,7 +50,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 - 
-- [ChatGPT API TEAM, TWILIO SEND SMS, OLJABET H., O’Reilly Media, Inc., Corey Schafer , Travis Media ]
+- [ChatGPT API TEAM, TWILIO SEND SMS, OLJABET H., O’Reilly Media, Inc., Corey Schafer , Traversy Media ]
 
 ## Contact
 
